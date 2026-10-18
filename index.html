@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Autos Colombia | Gestión de parqueadero</title>
+<style>
+:root{--navy:#102a43;--blue:#1d4ed8;--bg:#f3f6fb;--text:#172b4d;--muted:#62748a;--border:#dbe3ef;--white:#fff;--red:#b42318;--green:#067647}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+header{background:var(--navy);color:white;padding:20px 28px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+header h1{font-size:22px;margin:0}header p{margin:5px 0 0;color:#d9e6f2;font-size:13px}
+main{max-width:1200px;margin:24px auto;padding:0 18px}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+nav button{border:1px solid var(--border);background:white;color:var(--navy);padding:11px 14px;border-radius:8px;cursor:pointer;font-weight:700}
+nav button.active,nav button:hover{background:var(--blue);border-color:var(--blue);color:white}
+.panel{background:white;border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:18px;box-shadow:0 2px 8px #102a430a}
+h2{font-size:20px;margin:0 0 8px} .hint{color:var(--muted);font-size:13px;margin:0 0 18px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+label{display:block;font-size:13px;font-weight:700;margin-bottom:6px}
+input,select,textarea{width:100%;padding:10px 11px;border:1px solid #cbd5e1;border-radius:7px;font:inherit;background:white;color:var(--text)}
+textarea{min-height:80px;resize:vertical}
+.field{min-width:0}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.primary,.secondary,.danger{border:0;border-radius:7px;padding:11px 15px;cursor:pointer;font-weight:700}
+.primary{background:var(--blue);color:white}.secondary{background:#e8eef7;color:var(--navy)}.danger{background:#fee4e2;color:var(--red)}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:18px}
+.stat{background:white;border:1px solid var(--border);border-radius:10px;padding:16px}.stat span{font-size:13px;color:var(--muted)}.stat strong{display:block;font-size:25px;margin-top:7px}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:650px}th,td{padding:11px 10px;text-align:left;border-bottom:1px solid var(--border)}th{background:#f8fafc;color:#475569}
+.table-wrap{overflow:auto}.badge{display:inline-block;border-radius:99px;padding:4px 8px;font-size:11px;font-weight:700;background:#dcfce7;color:#166534}.badge.out{background:#e2e8f0;color:#475569}
+.hidden{display:none!important}.notice{padding:12px 14px;border-radius:8px;background:#eff6ff;color:#1e40af;font-size:13px;margin-bottom:16px}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
+@media(max-width:760px){.grid,.stats{grid-template-columns:1fr}.panel{padding:16px}header{padding:18px}}
+</style>
+</head>
+<body>
+<header>
+ <div><h1>Autos Colombia</h1><p>Sistema de gestión de parqueadero</p></div>
+ <div id="today"></div>
+</header>
+<main>
+ <div class="notice">Prototipo académico funcional: los registros se guardan en este navegador mediante almacenamiento local. No uses datos personales reales.</div>
+ <div class="stats">
+  <div class="stat"><span>Vehículos actualmente dentro</span><strong id="insideCount">0</strong></div>
+  <div class="stat"><span>Entradas registradas</span><strong id="entriesCount">0</strong></div>
+  <div class="stat"><span>Novedades registradas</span><strong id="newsCount">0</strong></div>
+ </div>
+ <nav>
+  <button class="active" data-view="entry">Registrar entrada</button>
+  <button data-view="vehicles">Consultar vehículos</button>
+  <button data-view="exit">Registrar salida</button>
+  <button data-view="news">Novedades</button>
+ </nav>
+
+ <section id="entry" class="panel view">
+  <h2>Registro de entrada</h2><p class="hint">Registra los datos del vehículo al ingresar al parqueadero.</p>
+  <form id="entryForm">
+   <div class="grid">
+    <div class="field"><label for="plate">Placa *</label><input id="plate" required maxlength="10" placeholder="Ej. KTR482"></div>
+    <div class="field"><label for="brand">Marca</label><input id="brand" placeholder="Ej. Renault"></div>
+    <div class="field"><label for="model">Modelo</label><input id="model" placeholder="Ej. Logan"></div>
+    <div class="field"><label for="color">Color</label><input id="color" placeholder="Ej. Gris plata"></div>
+    <div class="field"><label for="client">Nombre del cliente</label><input id="client" placeholder="Nombre completo"></div>
+    <div class="field"><label for="service">Tipo de servicio</label><select id="service"><option>Por minuto</option><option>Mensualidad</option></select></div>
+   </div>
+   <div class="actions"><button class="primary" type="submit">Registrar entrada</button><button class="secondary" type="reset">Limpiar</button></div>
+  </form>
+ </section>
+
+ <section id="vehicles" class="panel view hidden">
+  <h2>Consulta de vehículos</h2><p class="hint">Busca por placa, marca o nombre del cliente.</p>
+  <div class="field" style="max-width:420px;margin-bottom:16px"><label for="search">Buscar</label><input id="search" placeholder="Escribe para filtrar..."></div>
+  <div class="table-wrap"><table><thead><tr><th>Placa</th><th>Marca / modelo</th><th>Color</th><th>Cliente</th><th>Entrada</th><th>Estado</th></tr></thead><tbody id="vehiclesBody"></tbody></table></div>
+ </section>
+
+ <section id="exit" class="panel view hidden">
+  <h2>Registro de salida</h2><p class="hint">Busca la placa del vehículo que está dentro y registra su salida.</p>
+  <form id="exitForm">
+   <div class="grid"><div class="field"><label for="exitPlate">Placa *</label><input id="exitPlate" required placeholder="Ej. KTR482"></div></div>
+   <div class="actions"><button class="primary" type="submit">Registrar salida</button></div>
+  </form>
+  <div id="exitResult" class="hint" style="margin-top:14px"></div>
+ </section>
+
+ <section id="news" class="panel view hidden">
+  <h2>Registro de novedades</h2><p class="hint">Registra daños, incidentes u otras observaciones.</p>
+  <form id="newsForm">
+   <div class="grid">
+    <div class="field"><label for="newsPlate">Placa *</label><input id="newsPlate" required placeholder="Ej. KTR482"></div>
+    <div class="field"><label for="newsType">Tipo de novedad *</label><select id="newsType" required><option value="Daño">Daño</option><option value="Incidente">Incidente</option><option value="Observación">Observación</option><option value="Otro">Otro</option></select></div>
+    <div class="field"><label for="newsDate">Fecha</label><input id="newsDate" type="date"></div>
+    <div class="field" style="grid-column:1/-1"><label for="description">Descripción *</label><textarea id="description" required placeholder="Describe la novedad..."></textarea></div>
+   </div>
+   <div class="actions"><button class="primary" type="submit">Guardar novedad</button></div>
+  </form>
+  <div class="table-wrap" style="margin-top:20px"><table><thead><tr><th>Fecha</th><th>Placa</th><th>Tipo</th><th>Descripción</th></tr></thead><tbody id="newsBody"></tbody></table></div>
+ </section>
+</main>
+<footer>Autos Colombia · Proyecto académico de Ingeniería de Software</footer>
+<script>
+const STORAGE_KEY='autosColombiaDataV1';
+let data=JSON.parse(localStorage.getItem(STORAGE_KEY)||'{"vehicles":[],"news":[]}');
+const $=id=>document.getElementById(id);
+const nowText=()=>new Date().toLocaleString('es-CO',{dateStyle:'medium',timeStyle:'short'});
+$('today').textContent=nowText();
+$('newsDate').value=new Date().toISOString().slice(0,10);
+function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(data));render();}
+function render(){
+ const inside=data.vehicles.filter(v=>!v.exitAt);
+ $('insideCount').textContent=inside.length;
+ $('entriesCount').textContent=data.vehicles.length;
+ $('newsCount').textContent=data.news.length;
+ const q=($('search').value||'').trim().toLowerCase();
+ $('vehiclesBody').innerHTML=data.vehicles.filter(v=>[v.plate,v.brand,v.model,v.client].join(' ').toLowerCase().includes(q)).slice().reverse().map(v=>`<tr><td>${esc(v.plate)}</td><td>${esc(v.brand||'')} ${esc(v.model||'')}</td><td>${esc(v.color||'')}</td><td>${esc(v.client||'')}</td><td>${esc(v.entryAt)}</td><td><span class="badge ${v.exitAt?'out':''}">${v.exitAt?'Fuera':'Dentro'}</span></td></tr>`).join('')||'<tr><td colspan="6">No hay vehículos registrados.</td></tr>';
+ $('newsBody').innerHTML=data.news.slice().reverse().map(n=>`<tr><td>${esc(n.date)}</td><td>${esc(n.plate)}</td><td>${esc(n.type)}</td><td>${esc(n.description)}</td></tr>`).join('')||'<tr><td colspan="4">No hay novedades registradas.</td></tr>';
+}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+document.querySelectorAll('nav button').forEach(btn=>btn.addEventListener('click',()=>{
+ document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b===btn));
+ document.querySelectorAll('.view').forEach(v=>v.classList.toggle('hidden',v.id!==btn.dataset.view));
+}));
+$('entryForm').addEventListener('submit',e=>{
+ e.preventDefault();const plate=$('plate').value.trim().toUpperCase().replace(/\s+/g,'');
+ if(data.vehicles.some(v=>v.plate===plate&&!v.exitAt)){alert('Ese vehículo ya aparece dentro del parqueadero.');return;}
+ data.vehicles.push({id:Date.now(),plate,brand:$('brand').value.trim(),model:$('model').value.trim(),color:$('color').value.trim(),client:$('client').value.trim(),service:$('service').value,entryAt:nowText(),exitAt:null});
+ save();e.target.reset();alert('Entrada registrada correctamente.');
+});
+$('search').addEventListener('input',render);
+$('exitForm').addEventListener('submit',e=>{
+ e.preventDefault();const plate=$('exitPlate').value.trim().toUpperCase().replace(/\s+/g,'');
+ const vehicle=[...data.vehicles].reverse().find(v=>v.plate===plate&&!v.exitAt);
+ if(!vehicle){$('exitResult').textContent='No se encontró un vehículo con esa placa dentro del parqueadero.';return;}
+ vehicle.exitAt=nowText();save();$('exitResult').textContent=`Salida registrada para ${plate} a las ${vehicle.exitAt}.`;e.target.reset();
+});
+$('newsForm').addEventListener('submit',e=>{
+ e.preventDefault();data.news.push({id:Date.now(),plate:$('newsPlate').value.trim().toUpperCase(),type:$('newsType').value,date:$('newsDate').value||new Date().toISOString().slice(0,10),description:$('description').value.trim()});
+ save();e.target.reset();$('newsDate').value=new Date().toISOString().slice(0,10);alert('Novedad guardada correctamente.');
+});
+render();
+</script>
+</body>
+</html>
