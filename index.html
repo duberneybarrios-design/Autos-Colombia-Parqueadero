@@ -1,140 +1,135 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Autos Colombia | Gestión de parqueadero</title>
+<meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Autos Colombia | Parqueadero por mensualidades</title>
 <style>
-:root{--navy:#102a43;--blue:#1d4ed8;--bg:#f3f6fb;--text:#172b4d;--muted:#62748a;--border:#dbe3ef;--white:#fff;--red:#b42318;--green:#067647}
-*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
-header{background:var(--navy);color:white;padding:20px 28px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
-header h1{font-size:22px;margin:0}header p{margin:5px 0 0;color:#d9e6f2;font-size:13px}
-main{max-width:1200px;margin:24px auto;padding:0 18px}
-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
-nav button{border:1px solid var(--border);background:white;color:var(--navy);padding:11px 14px;border-radius:8px;cursor:pointer;font-weight:700}
-nav button.active,nav button:hover{background:var(--blue);border-color:var(--blue);color:white}
-.panel{background:white;border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:18px;box-shadow:0 2px 8px #102a430a}
-h2{font-size:20px;margin:0 0 8px} .hint{color:var(--muted);font-size:13px;margin:0 0 18px}
-.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-label{display:block;font-size:13px;font-weight:700;margin-bottom:6px}
-input,select,textarea{width:100%;padding:10px 11px;border:1px solid #cbd5e1;border-radius:7px;font:inherit;background:white;color:var(--text)}
-textarea{min-height:80px;resize:vertical}
-.field{min-width:0}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
-.primary,.secondary,.danger{border:0;border-radius:7px;padding:11px 15px;cursor:pointer;font-weight:700}
-.primary{background:var(--blue);color:white}.secondary{background:#e8eef7;color:var(--navy)}.danger{background:#fee4e2;color:var(--red)}
-.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:18px}
-.stat{background:white;border:1px solid var(--border);border-radius:10px;padding:16px}.stat span{font-size:13px;color:var(--muted)}.stat strong{display:block;font-size:25px;margin-top:7px}
-table{width:100%;border-collapse:collapse;font-size:13px;min-width:650px}th,td{padding:11px 10px;text-align:left;border-bottom:1px solid var(--border)}th{background:#f8fafc;color:#475569}
-.table-wrap{overflow:auto}.badge{display:inline-block;border-radius:99px;padding:4px 8px;font-size:11px;font-weight:700;background:#dcfce7;color:#166534}.badge.out{background:#e2e8f0;color:#475569}
-.hidden{display:none!important}.notice{padding:12px 14px;border-radius:8px;background:#eff6ff;color:#1e40af;font-size:13px;margin-bottom:16px}
-footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
-@media(max-width:760px){.grid,.stats{grid-template-columns:1fr}.panel{padding:16px}header{padding:18px}}
-</style>
-</head>
-<body>
-<header>
- <div><h1>Autos Colombia</h1><p>Sistema de gestión de parqueadero</p></div>
- <div id="today"></div>
-</header>
-<main>
- <div class="notice">Prototipo académico funcional: los registros se guardan en este navegador mediante almacenamiento local. No uses datos personales reales.</div>
- <div class="stats">
-  <div class="stat"><span>Vehículos actualmente dentro</span><strong id="insideCount">0</strong></div>
-  <div class="stat"><span>Entradas registradas</span><strong id="entriesCount">0</strong></div>
-  <div class="stat"><span>Novedades registradas</span><strong id="newsCount">0</strong></div>
- </div>
- <nav>
-  <button class="active" data-view="entry">Registrar entrada</button>
-  <button data-view="vehicles">Consultar vehículos</button>
-  <button data-view="exit">Registrar salida</button>
-  <button data-view="news">Novedades</button>
- </nav>
+:root{--ink:#192a40;--blue:#007c82;--bg:#edf2f7;--border:#dce6ec;--muted:#687c8d;--green:#157554;--red:#a32730;--navy:#112942}
+*{box-sizing:border-box}body{margin:0;font:15px/1.5 Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
+.shell{display:flex;min-height:100vh}.sidebar{background:var(--navy);color:#fff;flex:0 0 245px;padding:26px 16px;min-height:100vh}.logo{font-size:22px;font-weight:800;line-height:1.25;letter-spacing:.3px}.side-sub{font-size:12px;color:#b3c5d6;line-height:1.35;margin-top:6px}.side-bottom{margin-top:35px}.side-nav{display:grid;gap:8px;margin-top:30px}.side-nav button{width:100%;min-height:44px;text-align:left;padding:12px 13px;color:#d4e3ed;background:transparent;border:0;border-radius:9px;font-size:15px;cursor:pointer}.side-nav button:hover,.side-nav button.active{background:#1b5268;color:white}.main-area{min-width:0;flex:1}.topbar{background:white;padding:18px 34px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px}.pill{background:#e6f4f0;color:#086a50;padding:8px 13px;border-radius:30px;font-size:12px}.content{max-width:1320px;margin:auto;padding:28px 34px}h2{font-size:26px;line-height:1.3;margin:0 0 8px}h3{font-size:19px;margin:0 0 12px}.subtitle,.hint{color:#63768b;font-size:14px;margin:0 0 22px}.notice{background:#e9f5f7;color:#366275;border:0;border-radius:9px;padding:14px 17px;margin:20px 0}.panel,.stat{background:white;border:1px solid #dde6ed;border-radius:14px;padding:22px;box-shadow:0 3px 14px #15385309}.panel{margin-bottom:22px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}.stat span{color:var(--muted);font-size:13px}.stat strong{font-size:35px;display:block;color:#095f79;margin-top:7px}.home-two{display:grid;grid-template-columns:1fr 1fr;gap:18px}.home-two p{margin:0 0 17px;color:var(--muted)}button{font:inherit;border:1px solid #cbd9e4;color:#274158;background:white;padding:10px 13px;border-radius:8px;cursor:pointer;min-height:40px}button.primary,.primary{background:var(--blue);border-color:var(--blue);color:white;font-weight:700}button:hover{filter:brightness(.96)}button:active{transform:translateY(1px)}button.danger{color:#a32730}.actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:14px 0}.page-actions{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px;color:var(--muted)}.support-stat{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:12px;margin-top:12px}.support-stat button{font-size:12px}.hide{display:none!important}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}.field{min-width:0}label{font-weight:700;font-size:13px;display:block;margin-bottom:5px}input,select,textarea{width:100%;padding:11px;font:inherit;border:1px solid #b9c9d5;border-radius:8px;color:#173149;background:#fff}input:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid #ffbf4b;outline-offset:2px}#clientSearch{max-width:440px}form{margin-bottom:12px}#register .register-form{max-width:780px}#register .panel,#register{max-width:none}#register #clientForm{max-width:760px}.wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:14px;min-width:630px}th{background:#f2f7fa;color:#566d7c}td,th{text-align:left;padding:12px;border-bottom:1px solid #e3ebef}td button{padding:7px 10px;font-size:13px;min-height:35px}.tag{display:inline-block;font-size:12px;font-weight:700;background:#dff2ea;color:#157554;border-radius:20px;padding:5px 10px}.tag.gray{background:#fff0d3;color:#81551c}.tag.red{background:#fce8e7;color:#a44442}.cellcards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:22px}.cellcard{text-align:center;border:1px solid #ccdce5;background:#f6fbfc;border-radius:12px;padding:18px 10px}.cellcard strong{font-size:21px;color:#165673}.cellcard .meta{font-size:12px;margin:4px 0 9px;color:#60768a}.cellcard button{font-size:12px;padding:5px 9px;min-height:33px}.bottom-note{margin-top:15px}.msg{white-space:pre-line;color:#185568;position:sticky;bottom:12px;background:#e9f5f7;padding:0;border-radius:8px}.msg:not(:empty){padding:13px 17px;border:1px solid #c7e3e6}.footnote{color:#697f8e;font-size:12px;margin:25px 0}.muted{color:var(--muted)}
+@media(max-width:1050px){.cellcards{grid-template-columns:repeat(3,1fr)}}@media(max-width:850px){.sidebar{flex-basis:180px}.content{padding:22px}.cellcards,.stats{grid-template-columns:repeat(2,1fr)}.home-two,.two{grid-template-columns:1fr}.topbar{padding:16px}}@media(max-width:600px){.shell{display:block}.sidebar{width:100%;min-height:0;padding:15px}.side-nav{display:flex;overflow:auto;margin-top:13px;gap:4px}.side-nav button{white-space:nowrap;min-height:40px;width:auto;padding:9px}.side-bottom{display:none}.logo{font-size:17px}.topbar{padding:12px 15px}.content{padding:18px 14px}.stats,.grid,.cellcards{grid-template-columns:1fr}.pill{font-size:10px}h2{font-size:23px}}@media print{.sidebar,.topbar,button{display:none!important}.shell{display:block}.content{padding:12px}.view.hide{display:block!important;break-before:page}body{background:#fff}}
+</style></head>
+<body><div class="shell"><aside class="sidebar"><div class="logo">🚘 AUTOS<br/>COLOMBIA</div><div class="side-sub">Sistema de gestión de parqueadero<br/>Iteraciones 1 y 2 · EA2</div><nav aria-label="Módulos del sistema" class="side-nav">
+<button class="active" data-view="home" type="button">▦ Inicio</button>
+<button data-view="clients" type="button">♙ Usuarios</button>
+<button data-view="register" type="button">＋ Registrar usuario</button>
+<button data-view="vehicles" type="button">🚗 Vehículos</button>
+<button data-view="cells" type="button">▤ Celdas</button>
+<button data-view="contracts" type="button">▣ Asignaciones</button>
+<button data-view="movements" type="button">↔ Entradas y salidas</button>
+<button data-view="incidents" type="button">▤ Novedades</button></nav>
+<p class="side-sub side-bottom">Prototipo académico funcional<br/>Datos ficticios · Almacenamiento local</p></aside>
+<div class="main-area"><header class="topbar"><strong>Panel administrativo · Autos Colombia</strong><span class="pill">● Prototipo funcional EA2</span></header><main class="content">
+<section class="view" id="home"><h2>Panel principal</h2><p class="subtitle">Resumen general de las operaciones del parqueadero</p>
+<div class="notice">Prototipo académico local. Los datos se conservan en este navegador. Usa únicamente información ficticia; no dispone de autenticación ni pagos electrónicos.</div>
+<div class="stats"><div class="stat"><span>Usuarios registrados activos</span><strong id="nClients">0</strong></div><div class="stat"><span>Celdas disponibles</span><strong id="nFree">0</strong></div><div class="stat"><span>Asignaciones mensuales activas</span><strong id="nContracts">0</strong></div></div>
+<div class="home-two"><div class="panel"><h3>Accesos rápidos</h3><p>Administra clientes, vehículos y espacios de estacionamiento.</p><div class="actions"><button class="primary" data-jump="register" type="button">Registrar nuevo usuario</button><button data-jump="contracts" type="button">Asignar celda</button></div></div>
+<div class="panel"><h3>Reglas de negocio</h3><p class="muted">No se permiten documentos, placas ni códigos de celda repetidos. Una celda asignada permanece reservada aunque el vehículo salga temporalmente.</p></div></div>
+<div class="support-stat"><span>Vehículos dentro: <strong id="nInside">0</strong></span><button data-jump="movements" type="button">Ver entradas y salidas</button></div></section>
+<div id="appSections"><section class="panel view hide" id="clients"><h2>Gestión de usuarios</h2><p class="hint">HU-01, HU-02 y HU-03 · Consultar, modificar y gestionar el estado de los clientes.</p><div class="page-actions"><span>Consulta los usuarios registrados y administra su estado.</span><button class="primary" data-jump="register" type="button">＋ Nuevo usuario</button></div>
 
- <section id="entry" class="panel view">
-  <h2>Registro de entrada</h2><p class="hint">Registra los datos del vehículo al ingresar al parqueadero.</p>
-  <form id="entryForm">
-   <div class="grid">
-    <div class="field"><label for="plate">Placa *</label><input id="plate" required maxlength="10" placeholder="Ej. KTR482"></div>
-    <div class="field"><label for="brand">Marca</label><input id="brand" placeholder="Ej. Renault"></div>
-    <div class="field"><label for="model">Modelo</label><input id="model" placeholder="Ej. Logan"></div>
-    <div class="field"><label for="color">Color</label><input id="color" placeholder="Ej. Gris plata"></div>
-    <div class="field"><label for="client">Nombre del cliente</label><input id="client" placeholder="Nombre completo"></div>
-    <div class="field"><label for="service">Tipo de servicio</label><select id="service"><option>Por minuto</option><option>Mensualidad</option></select></div>
-   </div>
-   <div class="actions"><button class="primary" type="submit">Registrar entrada</button><button class="secondary" type="reset">Limpiar</button></div>
-  </form>
- </section>
-
- <section id="vehicles" class="panel view hidden">
-  <h2>Consulta de vehículos</h2><p class="hint">Busca por placa, marca o nombre del cliente.</p>
-  <div class="field" style="max-width:420px;margin-bottom:16px"><label for="search">Buscar</label><input id="search" placeholder="Escribe para filtrar..."></div>
-  <div class="table-wrap"><table><thead><tr><th>Placa</th><th>Marca / modelo</th><th>Color</th><th>Cliente</th><th>Entrada</th><th>Estado</th></tr></thead><tbody id="vehiclesBody"></tbody></table></div>
- </section>
-
- <section id="exit" class="panel view hidden">
-  <h2>Registro de salida</h2><p class="hint">Busca la placa del vehículo que está dentro y registra su salida.</p>
-  <form id="exitForm">
-   <div class="grid"><div class="field"><label for="exitPlate">Placa *</label><input id="exitPlate" required placeholder="Ej. KTR482"></div></div>
-   <div class="actions"><button class="primary" type="submit">Registrar salida</button></div>
-  </form>
-  <div id="exitResult" class="hint" style="margin-top:14px"></div>
- </section>
-
- <section id="news" class="panel view hidden">
-  <h2>Registro de novedades</h2><p class="hint">Registra daños, incidentes u otras observaciones.</p>
-  <form id="newsForm">
-   <div class="grid">
-    <div class="field"><label for="newsPlate">Placa *</label><input id="newsPlate" required placeholder="Ej. KTR482"></div>
-    <div class="field"><label for="newsType">Tipo de novedad *</label><select id="newsType" required><option value="Daño">Daño</option><option value="Incidente">Incidente</option><option value="Observación">Observación</option><option value="Otro">Otro</option></select></div>
-    <div class="field"><label for="newsDate">Fecha</label><input id="newsDate" type="date"></div>
-    <div class="field" style="grid-column:1/-1"><label for="description">Descripción *</label><textarea id="description" required placeholder="Describe la novedad..."></textarea></div>
-   </div>
-   <div class="actions"><button class="primary" type="submit">Guardar novedad</button></div>
-  </form>
-  <div class="table-wrap" style="margin-top:20px"><table><thead><tr><th>Fecha</th><th>Placa</th><th>Tipo</th><th>Descripción</th></tr></thead><tbody id="newsBody"></tbody></table></div>
- </section>
-</main>
-<footer>Autos Colombia · Proyecto académico de Ingeniería de Software</footer>
-<script>
-const STORAGE_KEY='autosColombiaDataV1';
-let data=JSON.parse(localStorage.getItem(STORAGE_KEY)||'{"vehicles":[],"news":[]}');
+<label for="clientSearch">Buscar por nombre, documento o placa</label><input id="clientSearch" placeholder="Buscar..." style="max-width:440px"/><div class="wrap"><table><thead><tr><th>Documento</th><th>Nombre</th><th>Contacto</th><th>Estado</th><th>Acciones</th></tr></thead><tbody id="clientsBody"></tbody></table></div></section><section class="panel view hide" id="register"><h2>Registrar usuario</h2><p class="hint">HU-01 y HU-03 · Formulario de datos personales y contacto.</p><div class="register-form"><form id="clientForm"><input id="clientEdit" type="hidden"/><div class="grid"><div class="field"><label for="document">Documento *</label><input id="document" maxlength="20" required=""/></div><div class="field"><label for="clientName">Nombre completo *</label><input id="clientName" required=""/></div><div class="field"><label for="phone">Teléfono</label><input id="phone" maxlength="30"/></div><div class="field"><label for="email">Correo electrónico</label><input id="email" type="email"/></div></div><div class="actions"><button class="primary" type="submit">Guardar usuario</button><button id="cancelClient" type="button">Cancelar edición</button></div></form></div></section><section class="panel view hide" id="vehicles"><h2>Asociar vehículos</h2><p class="hint">HU-04 · Cada vehículo queda vinculado a un usuario y su placa debe ser única.</p><form id="vehicleForm"><div class="grid"><div class="field"><label for="vehiclePlate">Placa *</label><input id="vehiclePlate" maxlength="10" required=""/></div><div class="field"><label for="vehicleClient">Propietario registrado *</label><select id="vehicleClient" required=""></select></div><div class="field"><label for="vehicleType">Tipo *</label><select id="vehicleType"><option value="Automóvil">Automóvil</option><option value="Motocicleta">Motocicleta</option></select></div><div class="field"><label for="vehicleBrand">Marca</label><input id="vehicleBrand"/></div><div class="field"><label for="vehicleModel">Modelo</label><input id="vehicleModel"/></div><div class="field"><label for="vehicleColor">Color</label><input id="vehicleColor"/></div></div><div class="actions"><button class="primary">Registrar vehículo</button></div></form><h3>Vehículos y propietario</h3><div class="wrap"><table><thead><tr><th>Placa</th><th>Tipo</th><th>Marca/modelo</th><th>Propietario</th><th>Estado</th></tr></thead><tbody id="vehicleBody"></tbody></table></div></section><section class="panel view hide" id="cells"><h2>Gestión de celdas</h2><p class="hint">HU-05 y HU-06 · Registrar, consultar, actualizar y bloquear celdas.</p><div class="page-actions"><span>Plano esquemático de disponibilidad</span><button class="primary" id="toggleCellForm" type="button">＋ Nueva celda</button></div><div class="panel hide" id="cellFormWrap" style="margin-bottom:18px"><h3>Registrar o actualizar celda</h3><form id="cellForm"><input id="cellEdit" type="hidden"/><div class="grid"><div class="field"><label for="cellCode">Código único *</label><input id="cellCode" maxlength="20" placeholder="A-01" required=""/></div><div class="field"><label for="cellLocation">Ubicación *</label><input id="cellLocation" placeholder="Nivel 1" required=""/></div><div class="field"><label for="cellType">Tipo permitido *</label><select id="cellType"><option value="Automóvil">Automóvil</option><option value="Motocicleta">Motocicleta</option></select></div><div class="field"><label for="cellBlocked">Condición de la celda</label><select id="cellBlocked"><option value="false">En servicio</option><option value="true">Fuera de servicio</option></select></div></div><div class="actions"><button class="primary">Guardar celda</button><button id="cancelCell" type="button">Cancelar edición</button></div></form></div><div aria-label="Disponibilidad de celdas" class="cellcards" id="cellCards"></div><h3>Inventario de celdas</h3><div class="wrap"><table><thead><tr><th>Código</th><th>Ubicación</th><th>Tipo</th><th>Situación</th><th>Acciones</th></tr></thead><tbody id="cellsBody"></tbody></table></div><div class="hint bottom-note">Disponible: sin asignación mensual y en servicio. Asignada: reservada hasta finalizar contrato. Fuera de servicio: no admite nuevas asignaciones.</div></section><section class="panel view hide" id="contracts"><h2>Asignaciones mensuales</h2><p class="hint">HU-07 y HU-08 · Asignar una celda compatible y finalizar una mensualidad. La salida temporal no libera la celda.</p><form id="contractForm"><div class="grid"><div class="field"><label for="contractVehicle">Vehículo registrado *</label><select id="contractVehicle" required=""></select></div><div class="field"><label for="contractCell">Celda compatible libre *</label><select id="contractCell" required=""></select></div><div class="field"><label for="contractStart">Fecha de inicio *</label><input id="contractStart" required="" type="date"/></div><div class="field"><label for="contractEnd">Fecha de finalización prevista *</label><input id="contractEnd" required="" type="date"/></div></div><div class="actions"><button class="primary">Crear asignación mensual</button></div></form><h3>Asignaciones e historial</h3><div class="wrap"><table><thead><tr><th>Placa</th><th>Cliente</th><th>Celda</th><th>Vigencia indicada</th><th>Estado</th><th>Acción</th></tr></thead><tbody id="contractBody"></tbody></table></div></section><section class="panel view hide" id="movements"><h2>Entradas y salidas de vehículos</h2><p class="hint">Iteración 1 integrada con mensualidades. Solo ingresan vehículos con asignación mensual activa. Una salida no cancela la asignación.</p><div class="two"><form class="panel" id="entryForm"><h3>Registrar entrada</h3><label for="entryPlate">Placa con mensualidad activa *</label><select id="entryPlate" required=""></select><div class="actions"><button class="primary">Registrar entrada</button></div></form><form class="panel" id="exitForm"><h3>Registrar salida</h3><label for="exitPlate">Vehículo actualmente dentro *</label><select id="exitPlate" required=""></select><div class="actions"><button class="primary">Registrar salida</button></div></form></div><h3>Consultar tiempo de permanencia</h3><label for="movementSearch">Buscar historial por placa</label><input id="movementSearch" placeholder="Escribe la placa" style="max-width:400px"/><div class="wrap"><table><thead><tr><th>Placa</th><th>Celda</th><th>Entrada</th><th>Salida</th><th>Tiempo de permanencia</th></tr></thead><tbody id="movementBody"></tbody></table></div></section><section class="panel view hide" id="incidents"><h2>Novedades</h2><p class="hint">Solo se admiten novedades de vehículos previamente registrados, como señaló el profesor.</p><form id="incidentForm"><div class="grid"><div class="field"><label for="incidentPlate">Vehículo registrado *</label><select id="incidentPlate" required=""></select></div><div class="field"><label for="incidentType">Tipo *</label><select id="incidentType"><option>Daño</option><option>Incidente</option><option>Observación</option><option>Otro</option></select></div><div class="field"><label for="incidentDate">Fecha *</label><input id="incidentDate" required="" type="date"/></div><div class="field wide"><label for="incidentDetail">Descripción *</label><textarea id="incidentDetail" required=""></textarea></div></div><div class="actions"><button class="primary">Guardar novedad</button></div></form><h3>Historial de novedades</h3><div class="wrap"><table><thead><tr><th>Fecha</th><th>Placa</th><th>Tipo</th><th>Descripción</th></tr></thead><tbody id="incidentsBody"></tbody></table></div></section></div><p class="footnote">Evidencia de Aprendizaje 2 · Autos Colombia · Prototipo funcional integrado, inspirado en los mockups del punto D · Datos ficticios.</p>
+<div aria-live="polite" class="msg" id="message" role="status"></div>
+</main></div></div><script>
+'use strict';
+const KEY='autosColombiaEA2v1';
 const $=id=>document.getElementById(id);
-const nowText=()=>new Date().toLocaleString('es-CO',{dateStyle:'medium',timeStyle:'short'});
-$('today').textContent=nowText();
-$('newsDate').value=new Date().toISOString().slice(0,10);
-function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(data));render();}
-function render(){
- const inside=data.vehicles.filter(v=>!v.exitAt);
- $('insideCount').textContent=inside.length;
- $('entriesCount').textContent=data.vehicles.length;
- $('newsCount').textContent=data.news.length;
- const q=($('search').value||'').trim().toLowerCase();
- $('vehiclesBody').innerHTML=data.vehicles.filter(v=>[v.plate,v.brand,v.model,v.client].join(' ').toLowerCase().includes(q)).slice().reverse().map(v=>`<tr><td>${esc(v.plate)}</td><td>${esc(v.brand||'')} ${esc(v.model||'')}</td><td>${esc(v.color||'')}</td><td>${esc(v.client||'')}</td><td>${esc(v.entryAt)}</td><td><span class="badge ${v.exitAt?'out':''}">${v.exitAt?'Fuera':'Dentro'}</span></td></tr>`).join('')||'<tr><td colspan="6">No hay vehículos registrados.</td></tr>';
- $('newsBody').innerHTML=data.news.slice().reverse().map(n=>`<tr><td>${esc(n.date)}</td><td>${esc(n.plate)}</td><td>${esc(n.type)}</td><td>${esc(n.description)}</td></tr>`).join('')||'<tr><td colspan="4">No hay novedades registradas.</td></tr>';
+const today=()=>new Date().toLocaleDateString('en-CA');
+const plate=s=>String(s||'').trim().toUpperCase().replace(/\s+/g,'');
+const code=s=>String(s||'').trim().toUpperCase();
+const safe=s=>String(s??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+const stamp=ms=>new Date(ms).toLocaleString('es-CO');
+const id=()=> (globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`);
+const initial=()=>({clients:[],vehicles:[],cells:[],contracts:[],movements:[],incidents:[]});
+function load(){try{const parsed=JSON.parse(localStorage.getItem(KEY));const d=initial();if(parsed&&typeof parsed==='object'){for(const k of Object.keys(d))d[k]=Array.isArray(parsed[k])?parsed[k]:[];}return d;}catch{ return initial();}}
+let db=load();
+const activeContracts=()=>db.contracts.filter(c=>c.status==='activa');
+const activeForVehicle=p=>activeContracts().find(c=>c.plate===p);
+const activeForCell=c=>activeContracts().find(a=>a.cellCode===c);
+const insideForVehicle=p=>db.movements.find(m=>m.plate===p&&m.exitAt===null);
+const clientById=cid=>db.clients.find(c=>c.id===cid);
+const vehicleByPlate=p=>db.vehicles.find(v=>v.plate===p);
+const cellByCode=c=>db.cells.find(x=>x.code===c);
+const nameForPlate=p=>clientById(vehicleByPlate(p)?.clientId)?.name||'—';
+function notice(m){$('message').textContent=m;activate('register');}
+function persist(){localStorage.setItem(KEY,JSON.stringify(db));render();}
+function options(el,items,label,placeholder='Selecciona...'){
+ const previous=el.value;el.innerHTML=`<option value="">${safe(placeholder)}</option>`+items.map(x=>`<option value="${safe(x.value)}">${safe(label(x))}</option>`).join('');if(items.some(x=>x.value===previous))el.value=previous;
 }
-function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-document.querySelectorAll('nav button').forEach(btn=>btn.addEventListener('click',()=>{
- document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b===btn));
- document.querySelectorAll('.view').forEach(v=>v.classList.toggle('hidden',v.id!==btn.dataset.view));
-}));
-$('entryForm').addEventListener('submit',e=>{
- e.preventDefault();const plate=$('plate').value.trim().toUpperCase().replace(/\s+/g,'');
- if(data.vehicles.some(v=>v.plate===plate&&!v.exitAt)){alert('Ese vehículo ya aparece dentro del parqueadero.');return;}
- data.vehicles.push({id:Date.now(),plate,brand:$('brand').value.trim(),model:$('model').value.trim(),color:$('color').value.trim(),client:$('client').value.trim(),service:$('service').value,entryAt:nowText(),exitAt:null});
- save();e.target.reset();alert('Entrada registrada correctamente.');
-});
-$('search').addEventListener('input',render);
-$('exitForm').addEventListener('submit',e=>{
- e.preventDefault();const plate=$('exitPlate').value.trim().toUpperCase().replace(/\s+/g,'');
- const vehicle=[...data.vehicles].reverse().find(v=>v.plate===plate&&!v.exitAt);
- if(!vehicle){$('exitResult').textContent='No se encontró un vehículo con esa placa dentro del parqueadero.';return;}
- vehicle.exitAt=nowText();save();$('exitResult').textContent=`Salida registrada para ${plate} a las ${vehicle.exitAt}.`;e.target.reset();
-});
-$('newsForm').addEventListener('submit',e=>{
- e.preventDefault();data.news.push({id:Date.now(),plate:$('newsPlate').value.trim().toUpperCase(),type:$('newsType').value,date:$('newsDate').value||new Date().toISOString().slice(0,10),description:$('description').value.trim()});
- save();e.target.reset();$('newsDate').value=new Date().toISOString().slice(0,10);alert('Novedad guardada correctamente.');
+function duration(a,b=Date.now()){const total=Math.max(0,Math.floor((b-a)/60000));const days=Math.floor(total/1440),hours=Math.floor(total%1440/60),mins=total%60;return `${days?days+' d ':''}${hours} h ${mins} min`;}
+function badge(txt,kind=''){return `<span class="tag ${kind}">${safe(txt)}</span>`;}
+function render(){
+ $('nClients').textContent=db.clients.filter(c=>c.active).length;
+ $('nFree').textContent=db.cells.filter(c=>!c.blocked&&!activeForCell(c.code)).length;
+ $('nInside').textContent=db.movements.filter(m=>m.exitAt===null).length;
+ $('nContracts').textContent=activeContracts().length;
+ const cq=$('clientSearch').value.trim().toLowerCase();
+ $('clientsBody').innerHTML=db.clients.filter(c=>[c.document,c.name,...db.vehicles.filter(v=>v.clientId===c.id).map(v=>v.plate)].join(' ').toLowerCase().includes(cq)).map(c=>`<tr><td>${safe(c.document)}</td><td>${safe(c.name)}</td><td>${safe(c.phone)} ${safe(c.email)}</td><td>${badge(c.active?'Activo':'Inactivo',c.active?'':'gray')}</td><td><button type="button" data-action="edit-client" data-id="${safe(c.id)}">Editar</button> <button type="button" data-action="toggle-client" data-id="${safe(c.id)}">${c.active?'Desactivar':'Activar'}</button></td></tr>`).join('')||'<tr><td colspan="5">Sin usuarios.</td></tr>';
+ const activeClients=db.clients.filter(c=>c.active).map(c=>({value:c.id,label:`${c.document} - ${c.name}`}));
+ options($('vehicleClient'),activeClients,x=>x.label,'Selecciona usuario activo');
+ $('vehicleBody').innerHTML=db.vehicles.map(v=>`<tr><td>${safe(v.plate)}</td><td>${safe(v.type)}</td><td>${safe(v.brand)} ${safe(v.model)}</td><td>${safe(clientById(v.clientId)?.name||'No encontrado')}</td><td>${insideForVehicle(v.plate)?badge('Dentro'):badge('Fuera','gray')}</td></tr>`).join('')||'<tr><td colspan="5">Sin vehículos.</td></tr>';
+ $('cellsBody').innerHTML=db.cells.map(c=>{const contract=activeForCell(c.code);const txt=c.blocked?'Fuera de servicio':contract?'Asignada a '+contract.plate:'Disponible';return `<tr><td>${safe(c.code)}</td><td>${safe(c.location)}</td><td>${safe(c.type)}</td><td>${badge(txt,c.blocked?'red':contract?'gray':'')}</td><td><button type="button" data-action="edit-cell" data-id="${safe(c.code)}">Editar</button></td></tr>`;}).join('')||'<tr><td colspan="5">Sin celdas.</td></tr>';
+ $('cellCards').innerHTML=db.cells.map(c=>{const assigned=activeForCell(c.code);let t=c.blocked?'Fuera de servicio':assigned?'Asignada':'Disponible';return `<div class="cellcard"><strong>${safe(c.code)}</strong><div class="meta">${safe(c.location)} · ${safe(c.type)}</div>${badge(t,c.blocked?'red':assigned?'gray':'')}<div style="margin-top:12px"><button type="button" data-action="edit-cell" data-id="${safe(c.code)}">Editar / gestionar</button></div></div>`}).join('')||'<p>No hay celdas registradas. Selecciona Nueva celda para empezar.</p>';
+ const eligible=db.vehicles.filter(v=>clientById(v.clientId)?.active&&!activeForVehicle(v.plate));
+ options($('contractVehicle'),eligible.map(v=>({value:v.plate,label:`${v.plate} - ${v.type} - ${nameForPlate(v.plate)}`})),x=>x.label,'Selecciona vehículo sin asignación');
+ const selected=vehicleByPlate($('contractVehicle').value);
+ const freeCells=db.cells.filter(c=>!c.blocked&&!activeForCell(c.code)&&(!selected||c.type===selected.type));
+ options($('contractCell'),freeCells.map(c=>({value:c.code,label:`${c.code} - ${c.location} - ${c.type}`})),x=>x.label,'Selecciona celda libre compatible');
+ $('contractBody').innerHTML=db.contracts.slice().reverse().map(c=>`<tr><td>${safe(c.plate)}</td><td>${safe(nameForPlate(c.plate))}</td><td>${safe(c.cellCode)}</td><td>${safe(c.start)} a ${safe(c.end)}</td><td>${badge(c.status==='activa'?'Activa':'Finalizada',c.status==='activa'?'':'gray')}</td><td>${c.status==='activa'?`<button type="button" data-action="end-contract" data-id="${safe(c.id)}">Finalizar asignación</button>`:safe(stamp(c.finishedAt))}</td></tr>`).join('')||'<tr><td colspan="6">Sin asignaciones.</td></tr>';
+ options($('entryPlate'),db.vehicles.filter(v=>activeForVehicle(v.plate)&&!insideForVehicle(v.plate)).map(v=>({value:v.plate,label:`${v.plate} - ${activeForVehicle(v.plate).cellCode}`})),x=>x.label,'Selecciona vehículo autorizado');
+ options($('exitPlate'),db.vehicles.filter(v=>insideForVehicle(v.plate)).map(v=>({value:v.plate,label:v.plate})),x=>x.label,'Selecciona vehículo dentro');
+ const mq=$('movementSearch').value.trim().toUpperCase();
+ $('movementBody').innerHTML=db.movements.filter(m=>m.plate.includes(mq)).slice().reverse().map(m=>`<tr><td>${safe(m.plate)}</td><td>${safe(m.cellCode)}</td><td>${safe(stamp(m.entryAt))}</td><td>${m.exitAt===null?'Dentro':safe(stamp(m.exitAt))}</td><td>${safe(duration(m.entryAt,m.exitAt??Date.now()))}${m.exitAt===null?' (en curso)':''}</td></tr>`).join('')||'<tr><td colspan="5">Sin movimientos.</td></tr>';
+ options($('incidentPlate'),db.vehicles.map(v=>({value:v.plate,label:v.plate})),x=>x.label,'Selecciona vehículo registrado');
+ $('incidentsBody').innerHTML=db.incidents.slice().reverse().map(n=>`<tr><td>${safe(n.date)}</td><td>${safe(n.plate)}</td><td>${safe(n.type)}</td><td>${safe(n.detail)}</td></tr>`).join('')||'<tr><td colspan="4">Sin novedades.</td></tr>';
+}
+function activate(view){document.querySelectorAll('nav button').forEach(n=>n.classList.toggle('active',n.dataset.view===view));document.querySelectorAll('.view').forEach(v=>v.classList.toggle('hide',v.id!==view));$('message').textContent='';render();window.scrollTo({top:0,behavior:'instant'});}
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>{activate(b.dataset.view);}));
+document.querySelectorAll('[data-jump]').forEach(b=>b.addEventListener('click',()=>activate(b.dataset.jump)));
+$('toggleCellForm').addEventListener('click',()=>{$('cellFormWrap').classList.toggle('hide');$('cellCode').focus();});
+
+$('clientSearch').addEventListener('input',render);$('movementSearch').addEventListener('input',render);
+$('incidentDate').value=today();$('contractStart').value=today();
+const nextMonth=d=>{const x=new Date(d+'T12:00:00');x.setMonth(x.getMonth()+1);return x.toLocaleDateString('en-CA');};
+$('contractEnd').value=nextMonth(today());
+$('contractStart').addEventListener('change',()=>{$('contractEnd').value=nextMonth($('contractStart').value);});
+$('contractVehicle').addEventListener('change',()=>{const v=vehicleByPlate($('contractVehicle').value);const available=db.cells.filter(c=>!c.blocked&&!activeForCell(c.code)&&(!v||v.type===c.type));options($('contractCell'),available.map(c=>({value:c.code,label:`${c.code} - ${c.type}`})),x=>x.label,'Selecciona celda compatible');});
+$('cancelClient').onclick=()=>{$('clientForm').reset();$('clientEdit').value='';};
+$('clientForm').addEventListener('submit',e=>{e.preventDefault();const doc=$('document').value.trim(),name=$('clientName').value.trim(),edit=$('clientEdit').value;
+ if(!doc||!name)return notice('Documento y nombre son obligatorios.');if(db.clients.some(c=>c.document===doc&&c.id!==edit))return notice('No se permite un documento duplicado.');
+ if(edit){const c=clientById(edit);if(!c)return notice('No existe el usuario.');Object.assign(c,{document:doc,name,phone:$('phone').value.trim(),email:$('email').value.trim()});}
+ else db.clients.push({id:id(),document:doc,name,phone:$('phone').value.trim(),email:$('email').value.trim(),active:true});
+ e.target.reset();$('clientEdit').value='';persist();activate('clients');notice('Usuario guardado correctamente.');});
+$('vehicleForm').addEventListener('submit',e=>{e.preventDefault();const p=plate($('vehiclePlate').value),cid=$('vehicleClient').value;
+ if(!p||!cid||!clientById(cid)?.active)return notice('Debes seleccionar un usuario activo y una placa.');
+ if(db.vehicles.some(v=>v.plate===p))return notice('La placa ya está registrada.');
+ db.vehicles.push({plate:p,clientId:cid,type:$('vehicleType').value,brand:$('vehicleBrand').value.trim(),model:$('vehicleModel').value.trim(),color:$('vehicleColor').value.trim()});
+ e.target.reset();persist();notice('Vehículo asociado al usuario correctamente.');});
+$('cancelCell').onclick=()=>{$('cellForm').reset();$('cellEdit').value='';$('cellCode').readOnly=false;};
+$('cellForm').addEventListener('submit',e=>{e.preventDefault();const c=code($('cellCode').value),location=$('cellLocation').value.trim(),type=$('cellType').value,blocked=$('cellBlocked').value==='true',edit=$('cellEdit').value;
+ if(!c||!location)return notice('Código y ubicación son obligatorios.');
+ if(edit){const cell=cellByCode(edit);if(!cell)return notice('No existe la celda.');if(activeForCell(edit)&&(type!==cell.type||blocked))return notice('No se puede cambiar el tipo ni bloquear una celda que tiene asignación mensual activa.');Object.assign(cell,{location,type,blocked});}
+ else{if(cellByCode(c))return notice('El código de celda ya está registrado.');db.cells.push({code:c,location,type,blocked});}
+ e.target.reset();$('cellEdit').value='';$('cellCode').readOnly=false;persist();$('cellFormWrap').classList.add('hide');notice('Celda guardada correctamente.');});
+$('contractForm').addEventListener('submit',e=>{e.preventDefault();const p=$('contractVehicle').value,c=$('contractCell').value,v=vehicleByPlate(p),cell=cellByCode(c),start=$('contractStart').value,end=$('contractEnd').value;
+ if(!v||!cell||!clientById(v.clientId)?.active)return notice('Vehículo, usuario activo y celda válida son obligatorios.');
+ if(cell.blocked||cell.type!==v.type||activeForCell(c)||activeForVehicle(p))return notice('No se puede asignar: celda fuera de servicio, ocupada o incompatible; o vehículo con asignación vigente.');
+ if(!start||!end||end<=start)return notice('La fecha de finalización debe ser posterior al inicio.');
+ db.contracts.push({id:id(),plate:p,cellCode:c,start,end,status:'activa',createdAt:Date.now(),finishedAt:null});persist();notice('Asignación mensual creada correctamente.');});
+$('entryForm').addEventListener('submit',e=>{e.preventDefault();const p=$('entryPlate').value,a=activeForVehicle(p),v=vehicleByPlate(p);
+ if(!v||!a||!clientById(v.clientId)?.active)return notice('El vehículo debe estar registrado y tener mensualidad activa con usuario activo.');
+ const c=cellByCode(a.cellCode);if(!c||c.blocked)return notice('La celda asignada no está en servicio.');
+ if(insideForVehicle(p))return notice('No se permite duplicar un ingreso activo de la misma placa.');
+ db.movements.push({id:id(),plate:p,cellCode:a.cellCode,contractId:a.id,entryAt:Date.now(),exitAt:null});persist();notice('Entrada registrada correctamente.');});
+$('exitForm').addEventListener('submit',e=>{e.preventDefault();const m=insideForVehicle($('exitPlate').value);if(!m)return notice('La placa no figura dentro del parqueadero.');m.exitAt=Date.now();persist();notice(`Salida guardada. Permanencia: ${duration(m.entryAt,m.exitAt)}. La celda continúa reservada por mensualidad.`);});
+$('incidentForm').addEventListener('submit',e=>{e.preventDefault();const p=$('incidentPlate').value;if(!vehicleByPlate(p))return notice('La novedad solo se puede guardar para un vehículo registrado.');const detail=$('incidentDetail').value.trim();if(!detail)return notice('La descripción es obligatoria.');
+ db.incidents.push({id:id(),plate:p,date:$('incidentDate').value||today(),type:$('incidentType').value,detail});e.target.reset();$('incidentDate').value=today();persist();notice('Novedad guardada correctamente.');});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-action]');if(!b)return;const action=b.dataset.action,ident=b.dataset.id;
+ if(action==='edit-client'){const c=clientById(ident);if(!c)return;$('clientEdit').value=c.id;$('document').value=c.document;$('clientName').value=c.name;$('phone').value=c.phone;$('email').value=c.email;window.scrollTo({top:0,behavior:'smooth'});}
+ if(action==='toggle-client'){const c=clientById(ident);if(!c)return;if(c.active&&db.vehicles.some(v=>v.clientId===c.id&&activeForVehicle(v.plate)))return notice('No puedes desactivar un usuario con asignaciones mensuales activas.');c.active=!c.active;persist();notice('Estado del usuario actualizado.');}
+ if(action==='edit-cell'){const c=cellByCode(ident);if(!c)return;$('cellEdit').value=c.code;$('cellCode').value=c.code;$('cellCode').readOnly=true;$('cellLocation').value=c.location;$('cellType').value=c.type;$('cellBlocked').value=String(c.blocked);$('cellFormWrap').classList.remove('hide');activate('cells');}
+ if(action==='end-contract'){const c=db.contracts.find(x=>x.id===ident&&x.status==='activa');if(!c)return;if(insideForVehicle(c.plate))return notice('Registra primero la salida del vehículo; no se puede finalizar su asignación mientras permanece dentro.');if(!confirm('¿Finalizar la mensualidad y liberar la celda?'))return;c.status='finalizada';c.finishedAt=Date.now();persist();notice('Asignación finalizada y celda liberada. Se conservó el historial.');}
 });
 render();
-</script>
-</body>
-</html>
+</script></body></html>
